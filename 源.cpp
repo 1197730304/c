@@ -1,90 +1,87 @@
 
+//组合问题
 #include<iostream>
-#include<string>
+#include<vector>
 using namespace std;
+
+class Solution {
+private:
+    vector<vector<int>> result;
+    vector<int> tmp;
+    void pathback(int n, int k, int startindex)
+    {
+        //判出条件
+        if (tmp.size() == k)
+        {
+            result.push_back(tmp);
+             return;
+        }
+
+        for (int i = startindex; i <= n; i++)
+        {
+            tmp.push_back(i);
+            pathback(n, k, i + 1);
+            tmp.pop_back();
+
+        }
+    }
+public:
+    vector<vector<int>> combine(int n, int k) {
+        result.clear();
+        tmp.clear();
+
+        pathback(n, k, 1);
+        return result;
+    }
+
+
+};
 
 int main()
 {
-    int tmp = 1;
-    string s;
-    cin >> s;
-    int str[26] = { 0 };
-    for (int i = 0; i < s.size(); i++)
-    {
-        str[s[i] - 'a']++;
-    }
-    for (int j = 0; j < s.size(); j++)
-    {
-        if (str[s[j] - 'a'] == 1)
-        {
-            cout << s[j];
-            tmp = 2;
-            break;
-        }
-        else
-            continue;
-    }
-    if (tmp == 1)
-    {
-        cout << -1;
-    }
-
-    return 0;
+    Solution a;
+     vector<vector<int>> ret=a.combine(4, 2);
+     
 }
 
-class Solution {
+//找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
+/*class Solution {
 public:
-    string reverseWords(string s) {
-        int i = 0;
-        int n = s.size();
-        int began = 0, end = 0;
-        for (i = 0; i <= n; i++)
+    vector<vector<int>> combinationSum3(int k, int n) {
+        result.clear();
+        path.clear();
+        backing(k, n, 1);
+        return result;
+    }
+private:
+    vector<vector<int>> result;
+    vector<int> path;
+    int pathsum;
+    void backing(int k, int n, int startindex)
+    {
+        //剪枝
+        if (pathsum > n)
+            return;
+        //判出条件
+        if (k == path.size())
         {
-            if (s[i] == ' ' || s[i] == '\0')
+            if (pathsum == n)
             {
-                for (end = i - 1; end > began; end--, began++)
-                {
-                    swap(s[end], s[began]);
-                }
-                began = i + 1;
+                result.push_back(path);
+
             }
-
+            return;
         }
-        return s;
-    }
-};
 
-class Solution {
-public:
-    string reverseStr(string s, int k) {
-        for (int i = 0; i < s.size(); i += 2 * k)
+
+        for (int i = startindex; i <= 9; i++)
         {
-            if (s.size() - i < k)
-                reverse(s.begin() + i, s.end());
-            else
-            {
-                reverse(s.begin() + i, s.begin() + k + i);
-            }
+            path.push_back(i);
+            pathsum += i;
+            backing(k, n, i + 1);
+            pathsum -= i;
+            path.pop_back();
         }
-        return s;
     }
-};
 
-
-class Solution {
-public:
-    int firstUniqChar(string s) {
-        int arr[26] = { 0 };
-        int n = s.size();
-        for (int i = 0; i < n; i++)
-        {
-            arr[s[i] - 'a']++;
-        }
-        for (int i = 0; i < n; i++)
-        {
-            if (arr[s[i] - 'a'] == 1)
-                return i;
-        }
-        return -1;
-    }
-};
+};*/
