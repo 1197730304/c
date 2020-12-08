@@ -1,270 +1,254 @@
 #include<iostream>
-#include<vector>
-#include<queue>
-#include<list>
 using namespace std;
 
-struct Time
-{
-	Time(int h,int m,int s)
-		:_h(h)
-		,_m(m)
-		,_s(s)
-	{}
-	int _m = 0;
-	int _h = 0;
-	int _s = 0;
 
-	bool operator<(const Time& t)const
-	{
-		if (_h < t._h)
-			return true;
-		else if(_h==t._h)
-		{
-			if (_m < t._m)
-				return true;
-			else if(_m==t._m)
-			{
-				if (_s < t._s)
-					return true;
-			}
-		}
-		return false;
-	}
-	//重载==
-	bool operator==(const Time& t)const
-	{
-		return _h == t._h && _m == t._m && _s == t._s;
-	}
-	//重载>
-	bool operator>(const Time& t)const
-	{
-		return !(*this == t || *this < t);
-
-	}
-};
-//重载输出流函数
-ostream& operator<<(ostream& _cout,const Time& t)
-{
-	_cout << t._h<<"-"<<t._m<<"-"<<t._s<<endl;
-	return _cout;
-}
-
-
-
-void test3()
-{
-	//自定义类型，建大堆，重载<
-	//priority_queue<Time> pq;
-	//建小堆，重载>
-	priority_queue<Time, vector<Time>, greater<Time>> pq;
-	pq.push(Time(18,19,20));
-	pq.push(Time(23,24,25));
-	pq.push(Time(15,16,18));
-
-	while (!pq.empty())
-	{
-		cout << pq.top();
-		pq.pop();
-	}
-	cout << endl;
-
-}
-//栈没有迭代器
-template<class T>
-class Stack
+class Person
 {
 public:
-	void push(const T& val)
+	void Print()
 	{
-		_v.push_back(val);
+		cout << "name:" << _name << endl;
+		cout << "age:" << _age << endl;
 	}
-
-	void pop()
-	{
-		_v.pop_back();
-	}
-
-	T& top()
-	{
-		return _v.back();
-	}
-
-
-	size_t size()
-	{
-		return _v.size();
-	}
-	bool empty()
-	{
-		return _v.empty();
-	}
-
-private:
-	vector<T> _v;
+//protected:
+	string _name = "peter"; // 姓名
+	int _age = 18; // 年龄
 };
-
-//实现队列
-
-template<class T>
-class Queue
+// 继承后父类的Person的成员（成员函数+成员变量）都会变成子类的一部分。这里体现出了Student和
+//Teacher复用了Person的成员。下面我们使用监视窗口查看Student和Teacher对象，可以看到变量的复用。
+//调用Print可以看到成员函数的复用。
+class Student : public Person
 {
+//protected:
 public:
-	void push(const T& val)
-	{
-		_li.push_back(val);
-	}
-	void pop()
-	{
-		_li.pop_front();
-	}
 
-	T& front()
-	{
-		return _li.front();
-	}
-
-	bool empty()
-	{
-		return _li.empty();
-	}
-
-	T& back()
-	{
-		return _li.back();
-	}
-
-	size_t size()
-	{
-		return _li.size();
-	}
-
-private:
-	list<T> _li;
-
-
+	int _stuid; // 学号
 };
-void test1()
+class Teacher : public Person
 {
-	queue<int> q;
-	q.push(1);
-	q.push(2);
-	q.push(3);
-	q.push(4);
+protected:
+	int _jobid; // 工号
+};
 
-	while (!q.empty())
-	{
-		cout << q.front() << " ";
-		q.pop();
-	}
-	cout << endl;
 
-}
 
 void test()
 {
-	Stack<int> st;
-	st.push(1);
-	st.push(2);
-	st.push(3);
-	st.push(4);
+	int a = 2.5;
 
-	while (!st.empty())
-	{
-		cout << st.top() << " ";
-		//队头出队
-		st.pop();
-	}
-	cout << endl;
+	Person p;
+
+	Student s;
+	
+	//切片：
+	//子类---》父类
+	p = s;
+	Person* ptr = &s;
+	Person& ref = s;
+
+	//父类不能转换为子类对象
+	//s = p;
+	//s = (Student)p;
+
+	//父类不能转换为子类的指针或引用
+	//必须通过强制类型转换，不安全
+	//Student* ptr2 = &p;
+
+	//强制类型转换不安全，访问不到子类中新增的成员
+	Student* ptr2 = (Student*)&p;
+	//Student* ref2 = &p;
+	Student& ref2 = (Student&)p;
+
+	//越界访问
+	
 	
 }
+#define sqr(A) A*A
+
+//
+//void main()
+//{
+//	int x = 6, y = 3, z = 2;
+//	x /= sqr(y + z) / sqr(y + z);
+//	cout << x << endl;
+//}
 
 
+#include<string>
+#include<math.h>
+//string tobinary(int n)
+//{
+//	string ret;
+//	while (n != 0)
+//	{
+//		ret += (n % 2);
+//		n /= 2;
+//	}
+//	return ret;
+//}
+//int binInsert(int n, int m, int j, int i) {
+//	string sn = tobinary(n);
+//	string sm = tobinary(m);
+//	int len = i - j + 1;
+//	while (sm.size() != len)
+//	{
+//		sm.insert(sm.begin(), '0');
+//		
+//	}
+//	sn.insert(sm.(begin()+j - 1), sm);
+//	int count = 0;
+//	long long sum = 0;
+//	for (int k = sn.size() - 1; i >= 0; i--)
+//	{
+//		int ret = pow(2, count);
+//		sum += (ret * (sn[i] - '0'));
+//	}
+//	return sum;
+//}
 
-void test2()
-{	//默认大堆
-	//priority_queue<int> pq;
-	//改成小堆
-	priority_queue<int, vector<int>, greater<int>> pq;
-	pq.push(1);
-	pq.push(10);
-	pq.push(3);
-	pq.push(0);
-	pq.push(9);
 
-	while ((!pq.empty()))
-	{
-		//获取堆顶元素
-		cout << pq.top() << " ";
-		
-		//输出对顶元素
-		pq.pop();
-	}
-	cout << endl;
-}
-int main()
+string tobinary(int n)
 {
-	test3();
-}
-/*void test()
-{
-	stack<int> st;
-	st.push(1);
-	st.push(2);
-	st.push(3);
-	st.push(4);
-
-	while (!st.empty())
+	string ret;
+	while (n != 0)
 	{
-		cout << st.top() << " ";
-		st.pop();
+		ret += (n % 2);
+		n /= 2;
 	}
-	cout << endl;
+	reverse(ret.begin(), ret.end());
+	return ret;
+}
+int binInsert(int n, int m, int j, int i) {
+	string sn = tobinary(n);
+	string sm = tobinary(m);
+	int len = i - j + 1;
+	while (sm.size() != len)
+	{
+		sm.insert(sm.begin(), '0');
+	}
+	string tmp(sn.begin(), sn.begin() + j - 1);
+	string tmp2(sn.begin() + j, sn.end());
+	tmp += sm;
+	tmp += tmp2;
+	sn = tmp;
+	int count = 0;
+	long long sum = 0;
+	for (int k = sn.size() - 1; i >= 0; i--)
+	{
+		int ret = pow(2, count);
+		sum += (ret * (sn[i] - '0'));
+		count++;
+	}
+	return sum;
 }
 
-//实现最小栈
-template<class T>
-class Minstack
-{
-public:
-	Minstack()
-	{
-	}
+//int main()
+//{
+//	int ret = binInsert(1024, 19, 2, 6);
+//	cout << ret << endl;
+//	return 0;
+//}
 
-	void push(const T& val)
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+bool issushu(int n)
+{
+	for (int i = 2; i < n; i++)
 	{
-		st.push(val);
-		if (minst.empty() || val <= minst.top())
+		if (n % i == 0)
+			return false;
+	}
+	return true;
+}
+vector<int> binnum(int n)
+{
+	vector<int> arr;
+	int flag = 0;
+
+	int i = n;
+	while (flag == 0)
+	{
+		if (issushu(i))
 		{
-			minst.push(val);
+			flag = 1;
+			arr.push_back(i);
+			break;
 		}
+		i--;
 	}
-
-	void pop()
+	flag = 0;
+	i = n;
+	while (flag == 0)
 	{
-		if (st.top() == minst.top())
+		if (issushu(i * 2 - arr[0]))
 		{
-			minst.pop();
+			flag = 1;
+			arr.push_back(2 * n - arr[0]);
+			break;
 		}
-		st.pop();
+		i++;
 	}
 
-	int top()
-	{
-		return st.top();
-	}
 
-	int gettop()
-	{
-		return minst.top();
-	}
+	return arr;
 
-	stack<int> st;
-	stack<int> minst;
+}
+//int main()
+//{
+//	int n;
+//	while (cin >> n)
+//	{
+//		vector<int> p = binnum(n / 2);
+//		cout << p[0] << endl;
+//		cout << p[1] << endl;
+//	}
+//
+//
+//	return 0;
+//}
 
-};
-int main()
-{
-	test();
-	return 0;
-}*/
+//int main()
+//{
+//	int i = 0, a = 1, b = 2, c = 3;
+//	i = ++a || ++b || ++c;
+//	cout << i << " " << a << " " << b << " " << c << endl;
+//	return 0;
+//}
+//#include<iostream>
+//#include<string>
+//#include<vector>
+//using namespace std;
+//
+//int main()
+//{
+//	string str;
+//	getline(cin, str);
+//	int i = 0;
+//	int count = 0;
+//	vector<string> ret;
+//	string tmp;
+//	while (i < str.size())
+//	{
+//		while (i < str.size() && str[i] != ' ')
+//		{
+//
+//			tmp += str[i];
+//
+//			i++;
+//		}
+//		ret.push_back(tmp);
+//		tmp.clear();
+//		count++;
+//		i++;
+//
+//	}
+//	cout << count << endl;
+//	for (int i = 0; i < ret.size(); i++)
+//	{
+//		cout << ret[i] << endl;
+//	}
+//	return 0;
+//}
